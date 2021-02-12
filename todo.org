@@ -1,0 +1,16 @@
+* TODO extract chapters (and dive by chapters the notes)
+* TODO usar https://github.com/karlicoss/orgparse
+* TODO org file reader
+* TODO detect if book changed or not
+* TODO improve vocabulary
+    ** TODO add synonyms to each definition
+    ** TODO incorporate Merriam webster dictionary for epystemology etc
+* merge info from book and existing org file
+* DONE add definitions to vocabulary
+
+* Learnt:
+- click library
+- decorators
+- pydantic
+- treelib
+- apis for urls
