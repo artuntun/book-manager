@@ -16,6 +16,9 @@ TEMPLATE_ENVIRONMENT = Environment(
     lstrip_blocks=False
 )
 
+class AnkiDirectoryError(Exception):
+    pass
+
 
 def render_org_tree(tree: Tree, node: Node, payload='') -> str:
     parent = tree.parent(node.identifier)

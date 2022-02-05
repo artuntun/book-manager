@@ -12,7 +12,7 @@ from ibooks_highlights.util import (
     cmp_to_key, query_compare_no_asset_id, TEMPLATE_ENVIRONMENT,
     NS_TIME_INTERVAL_SINCE_1970, render_org_tree)
 from ibooks_highlights.ibooksdb import SqliteQueryType
-from ibooks_highlights.vocabulary import request_word_info
+from ibooks_highlights.vocabulary import Word, request_word_info
 
 
 class BookMetadataError(Exception):
@@ -242,6 +242,39 @@ class Book(object):
             f.write(s)
 
 
+    def extract_vocabulary(self, path: pathlib.Path,
+                           with_audio: bool,
+                           media_path: pathlib.Path) -> List[Word]:
+        if not path.is_dir():
+            raise NotADirectoryError(f'{str(path)} is not a directory')
+
+        if not self._sync_notes:
+            print('sync locked for', self._title)
+            return
+        
+        print('updating', self._title)
+
+        # mod_date = max([
+        #     anno.modified_date
+        #     for anno in self._annotations
+        # ])
+        # mod_date_str = mod_date.isoformat()
+        book_vocabulary = {}
+        for anno in self._annotations:
+            if len(anno.selected_text.split(' ')) == 1:
+                word = anno.selected_text
+                word_info = request_word_info(word)
+                word_info.book_examples = [anno.represent_text]
+                if word in book_vocabulary:
+                    book_vocabulary[word].book_examples.append(anno.represent_text)
+                else:
+                    if with_audio:
+                        word_info.download_audio(media_path)
+                    book_vocabulary[word] = word_info
+
+        return list(book_vocabulary.values())
+
+
     def write_org(self, path: pathlib.Path) -> None:
 
         if not path.is_dir():
@@ -386,3 +419,19 @@ class BookList(object):
                 book.write_org(path)
             else:
                 book.write(path)
+
+    # def generate_vocabulary(self, path: pathlib.Path=None, 
+    #                         force: bool=False) -> None:
+
+    #     if path is None:
+    #         path = self._path
+
+    #     if not path.is_dir():
+    #         raise NotADirectoryError(f'{str(path)} is not a directory')
+
+    #     path.mkdir(parents=True, exist_ok=True)
+
+    #     for book in self.books.values():
+    #         if (not book.is_modified) and (not force):
+    #             continue
+
