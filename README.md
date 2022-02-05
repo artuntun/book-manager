@@ -82,4 +82,24 @@ export IBOOKS_HIGHLIGHT_DIRECTORY=some/other/folder
 
 ## TODO
 
-- [ ] `¯\_(ツ)_/¯`
+* Vocabulary
+    ** TODO create a separate folder per book: .md .apkg and assets(mp3s)
+    ** TODO only update books that have changed
+    ** TODO move everything into an sqlite3 database
+    ** TODO detect if the asset is already downloaded
+
+* Notes
+    * TODO extract chapters (and dive by chapters the notes)
+    * TODO usar https://github.com/karlicoss/orgparse
+    * TODO org file reader
+    * TODO detect if book changed or not
+    * TODO improve vocabulary
+        ** TODO add synonyms to each definition
+        ** TODO incorporate Merriam webster dictionary for epystemology etc
+
+* Learnt:
+- click library
+- decorators
+- pydantic
+- treelib
+- apis for urls
